@@ -1,4 +1,4 @@
-#include "grafic.h"
+#include "graphic.h"
 
 void sqr(pair<int,int> pos ,int n){
     wmove(stdscr, pos.first, pos.second);

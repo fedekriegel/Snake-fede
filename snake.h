@@ -5,7 +5,7 @@
 
 #include <bits/stdc++.h>
 #include <ncurses.h>
-#include "grafic.h"
+#include "graphic.h"
 using namespace std;
 
 class Snake{
@@ -54,6 +54,6 @@ public:
     string getName(){
         return name;
     }
-    
+
 
 };

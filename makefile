@@ -1,6 +1,6 @@
 
 OBJ_C = snake.cc main.cc grafic.cc
-OBJ_O = snake.o main.o grafic.o
+OBJ_O = snake.o main.o graphic.o
 
 all: snake
 

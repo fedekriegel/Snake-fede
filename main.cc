@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 
 #include "snake.h"
-#include "grafic.h" 
+#include "graphic.h" 
 
 #include "mysql_connection.h"
 #include <cppconn/driver.h>
