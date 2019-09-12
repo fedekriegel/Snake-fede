@@ -190,9 +190,9 @@ int32_t main(int32_t argc, char const *argv[]){
     
     fore(i,0,n){
         if(atoi(argv[2])){
-            cin>>names[i];
+            getline(cin,names[i]);
         }else{
-            names[i]= "fede";
+            names[i]= "player"+to_string(i+1);
         }
     }
 
