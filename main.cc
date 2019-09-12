@@ -177,7 +177,6 @@ int32_t main(int32_t argc, char const *argv[]){
     waitch();
     waitch();    
     endwin(); // opuesto a initscr
-        
     Snake s = snakes[win];
     try {
         sql::Driver *driver;
@@ -188,7 +187,7 @@ int32_t main(int32_t argc, char const *argv[]){
 
        //Create a connection 
         driver = get_driver_instance();
-        con = driver->connect("tcp://127.0.0.1:3306", "lucario", getenv("PASSWORD"));
+        con = driver->connect("tcp://127.0.0.1:3306", getenv("USERBD"), getenv("PASSWORD"));
        //Connect to the MySQL test database 
         con->setSchema("snake");
         stmt = con->createStatement();
