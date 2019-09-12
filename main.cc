@@ -103,6 +103,75 @@ void waitch(){
 }
 
 
+void insert_bd(Snake &s){
+
+    if(getenv("BD") != NULL){
+        try {
+            sql::Driver *driver;
+            sql::Connection *con;
+            sql::Statement *stmt;
+            sql::ResultSet *resQ;
+            sql::PreparedStatement *pstm;
+
+           //Create a connection 
+            driver = get_driver_instance();
+            con = driver->connect("tcp://127.0.0.1:3306", getenv("USERBD"), getenv("PASSWORD"));
+           //Connect to the MySQL test database 
+            con->setSchema("snake");
+            stmt = con->createStatement();
+            pstm = con->prepareStatement("insert into snake_t (name,score) values(?,?)");
+            pstm->setString(1,s.getName());
+            pstm->setInt(2,s.getScore());
+            pstm->executeUpdate();
+            resQ = stmt->executeQuery("SELECT * FROM snake_t order by score desc limit 5 ");
+            int i=1;
+            while (resQ->next()) {
+                cout << "\t... El " <<i<< "° mejor jugador es: ";
+                // Access column data by numeric offset, 1 is the first column 
+                cout << resQ->getString(2)<<" con un score de " << resQ->getString(3) << endl;
+                i++;
+            }   
+      
+            delete pstm;
+            delete resQ;
+            delete stmt;
+            delete con;
+        } catch (sql::SQLException &e) {
+            cout << "# ERR: SQLException in " << __FILE__;
+            cout << "# ERR: " << e.what();
+            cout << " (MySQL error code: " << e.getErrorCode();
+            cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+        }        
+    } else {
+        freopen("score.txt","a+",stdin);
+        string s;
+        vector<pair<int,string>> order;
+        while(getline(cin,s)){
+            stringstream sa(s);
+            int score;
+            string t; 
+            sa>>score;
+            getline(sa,t);
+            order.pb(make_pair(score,t));
+        }
+        fclose(stdin);
+        sort(order.begin(),order.end(),greater<pair<int,string>>());
+        fore(i,0,min(5ll,SZ(order))){
+            cout<<"\t... El "<<i+1<<"° mejor jugador es: ";
+            cout << order[i].second<<" con un score de " << order[i].first << endl;
+        }
+        freopen("score.txt","w",stdout);
+        fore(i,0,min(5ll,SZ(order))){
+            cout<<order[i].first<<" "<<order[i].second<<endl;
+        }
+        fclose(stdout);
+
+
+    }
+
+
+}
+
 
 
 int32_t main(int32_t argc, char const *argv[]){
@@ -177,43 +246,10 @@ int32_t main(int32_t argc, char const *argv[]){
     waitch();
     waitch();    
     endwin(); // opuesto a initscr
-    Snake s = snakes[win];
-    try {
-        sql::Driver *driver;
-        sql::Connection *con;
-        sql::Statement *stmt;
-        sql::ResultSet *resQ;
-        sql::PreparedStatement *pstm;
 
-       //Create a connection 
-        driver = get_driver_instance();
-        con = driver->connect("tcp://127.0.0.1:3306", getenv("USERBD"), getenv("PASSWORD"));
-       //Connect to the MySQL test database 
-        con->setSchema("snake");
-        stmt = con->createStatement();
-        pstm = con->prepareStatement("insert into snake_t (name,score) values(?,?)");
-        pstm->setString(1,s.getName());
-        pstm->setInt(2,s.getScore());
-        pstm->executeUpdate();
-        resQ = stmt->executeQuery("SELECT * FROM snake_t order by score desc limit 5 ");
-        int i=1;
-        while (resQ->next()) {
-            cout << "\t... El " <<i<< "° mejor jugador es: ";
-            // Access column data by numeric offset, 1 is the first column 
-            cout << resQ->getString(2)<<" con un score de " << resQ->getString(3) << endl;
-            i++;
-        }   
-  
-        delete pstm;
-        delete resQ;
-        delete stmt;
-        delete con;
-    } catch (sql::SQLException &e) {
-        cout << "# ERR: SQLException in " << __FILE__;
-        cout << "# ERR: " << e.what();
-        cout << " (MySQL error code: " << e.getErrorCode();
-        cout << ", SQLState: " << e.getSQLState() << " )" << endl;
-    }
+    insert_bd(snakes[win]);
+
+
 
     return 0;    
 } 

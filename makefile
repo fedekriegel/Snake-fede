@@ -16,8 +16,9 @@ $(objects): %.o : %.cc
 
 
 snake_g: $(OBJ_O)
-	g++ -std=c++17 -g -O2 -D LUCARIO -o snake_g $(OBJ_O)  -lncurses -lmysqlcppconn
+	g++ -std=c++17 -g -O2 -o snake_g $(OBJ_O)  -lncurses -lmysqlcppconn
 
 rm:
 	rm $(OBJ_O) snake_g
-	
+
+
