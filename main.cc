@@ -152,6 +152,9 @@ void insert_bd(Snake &snk){
             string t; 
             sa>>score;
             getline(sa,t);
+            reverse(ALL(t));
+            while(t.back() == ' ')t.pop_back();
+            reverse(ALL(t));
             order.pb(make_pair(score,t));
         }
         order.pb(make_pair(snk.getScore(),snk.getName()));
