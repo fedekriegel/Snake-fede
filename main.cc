@@ -143,7 +143,8 @@ void insert_bd(Snake &snk){
             cout << ", SQLState: " << e.getSQLState() << " )" << endl;
         }        
     } else {
-    	freopen("score.txt","a+",stdin);
+
+    	auto a = freopen("score.txt","a+",stdin);
         string s;
         vector<pair<int,string>> order;
         while(getline(cin,s)){
@@ -158,23 +159,19 @@ void insert_bd(Snake &snk){
             order.pb(make_pair(score,t));
         }
         order.pb(make_pair(snk.getScore(),snk.getName()));
-	fclose(stdin);
+    	fclose(stdin);
         int k = SZ(order);
-	sort(order.begin(),order.end(),greater<pair<int,string>>());
+	    sort(order.begin(),order.end(),greater<pair<int,string>>());
         fore(i,0,min(5ll,SZ(order))){
             cout<<"\t... El "<<i+1<<"° mejor jugador es: ";
             cout << order[i].second<<" con un score de " << order[i].first << endl;
         }
-        freopen("score.txt","w",stdout);
+        auto b = freopen("score.txt","w",stdout);
         fore(i,0,min(5ll,SZ(order))){
             cout<<order[i].first<<" "<<order[i].second<<endl;
         }
         fclose(stdout);
-	cout<<k<<endl;
-
     }
-
-
 }
 
 

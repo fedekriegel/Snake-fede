@@ -11,12 +11,12 @@ snake:snake_g
 	./snake_g $(player) $(getname)
 
 
-$(objects): %.o : %.cc
-	g++ -std=c++17 -O2 -c -o $@ $< -lncurses -lmysqlcppconn
+$(OBJ_O): %.o : %.cc
+	g++ -std=c++11 -O2 -c -o $@ $< -lncurses -lmysqlcppconn
 
 
 snake_g: $(OBJ_O)
-	g++ -std=c++17 -g -O2 -o snake_g $(OBJ_O)  -lncurses -lmysqlcppconn
+	g++ -std=c++17 -O2 -g -o snake_g $(OBJ_O)  -lncurses -lmysqlcppconn
 
 rm:
 	rm $(OBJ_O) snake_g
