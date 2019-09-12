@@ -103,7 +103,7 @@ void waitch(){
 }
 
 
-void insert_bd(Snake &s){
+void insert_bd(Snake &snk){
 
     if(getenv("BD") != NULL){
         try {
@@ -120,8 +120,8 @@ void insert_bd(Snake &s){
             con->setSchema("snake");
             stmt = con->createStatement();
             pstm = con->prepareStatement("insert into snake_t (name,score) values(?,?)");
-            pstm->setString(1,s.getName());
-            pstm->setInt(2,s.getScore());
+            pstm->setString(1,snk.getName());
+            pstm->setInt(2,snk.getScore());
             pstm->executeUpdate();
             resQ = stmt->executeQuery("SELECT * FROM snake_t order by score desc limit 5 ");
             int i=1;
@@ -143,7 +143,7 @@ void insert_bd(Snake &s){
             cout << ", SQLState: " << e.getSQLState() << " )" << endl;
         }        
     } else {
-        freopen("score.txt","a+",stdin);
+    	freopen("score.txt","a+",stdin);
         string s;
         vector<pair<int,string>> order;
         while(getline(cin,s)){
@@ -154,8 +154,10 @@ void insert_bd(Snake &s){
             getline(sa,t);
             order.pb(make_pair(score,t));
         }
-        fclose(stdin);
-        sort(order.begin(),order.end(),greater<pair<int,string>>());
+        order.pb(make_pair(snk.getScore(),snk.getName()));
+	fclose(stdin);
+        int k = SZ(order);
+	sort(order.begin(),order.end(),greater<pair<int,string>>());
         fore(i,0,min(5ll,SZ(order))){
             cout<<"\t... El "<<i+1<<"° mejor jugador es: ";
             cout << order[i].second<<" con un score de " << order[i].first << endl;
@@ -165,7 +167,7 @@ void insert_bd(Snake &s){
             cout<<order[i].first<<" "<<order[i].second<<endl;
         }
         fclose(stdout);
-
+	cout<<k<<endl;
 
     }
 
